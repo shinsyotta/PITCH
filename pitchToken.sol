@@ -1,5 +1,9 @@
 pragma solidity ^0.4.4;
 
+// We may also consider ERC-223 token contract instead of ERC-20.  
+// Main difference is that it cannot be destroyed by sending to a contract that it cannot be sent from.
+// This has been the cause of much lost ETH.
+
 // I'd like to strip out a bunch of the boilerplate from this contract and reduce inheritance and other complexity.
 
 contract Token {
