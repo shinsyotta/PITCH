@@ -52,7 +52,8 @@ contract StandardToken is Token {
         
         // TODO: If token sale is not finished.
         // AND user is not the owner of the contract
-        // don't allow transfer
+        // don't allow transfer.
+        // TODO: Implement "tradeable" function.
 
         if (balances[msg.sender] >= _value && _value > 0) {
             balances[msg.sender] -= _value;
@@ -69,6 +70,7 @@ contract StandardToken is Token {
         // TODO: If token sale is not finished.
         // AND user is not the owner of the contract
         // don't allow transfer
+        // TODO: Implement "tradeable" function.
 
         if (balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0) {
             balances[_to] += _value;
@@ -137,6 +139,8 @@ contract ERC20Token is StandardToken {
     }
 
     /* Approves and then calls the receiving contract */
+
+    // TODO: Does this enable a receiving contract to take some kind of action?  If not, we need to implement a feature to do this so that the token is usable.
     function approveAndCall(address _spender, uint256 _value, bytes _extraData) public returns (bool success) {
         allowed[msg.sender][_spender] = _value;
         Approval(msg.sender, _spender, _value);
