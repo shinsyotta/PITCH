@@ -9,7 +9,7 @@ contract ERC20Token {
 
 // Consider using SafeMath library from OpenZeppelin.
 contract PricedTokenSale {
-    // PMKN hardcoded for simplicity
+    // PMKN token hardcoded for simplicity
     address tokenAddress = 0xcD7f46B8A66203B842c7B68863de7e90643E426B; // Whatever is the contract address for pitchToken when deployed.
     
     // Need to accept payment and transfer it to custody of another wallet.
