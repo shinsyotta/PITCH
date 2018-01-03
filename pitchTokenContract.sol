@@ -15,6 +15,7 @@ contract PricedTokenSale {
     // Token sale should work as "send ETH to Ethereum address 0xabc123abc1233B842c7B68863de7e90643E426B"
 
     function deliverTokens(uint256 amountToTransfer) public returns (bool success) {
+        // amountToTransfer needs to be dictated by the price of the tokens and the amount of ETH sent to this function.
         ERC20Token token = ERC20Token(tokenAddress);
         token.transfer(msg.sender, amountToTransfer);
         return true;
