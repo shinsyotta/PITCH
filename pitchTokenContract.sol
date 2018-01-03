@@ -6,6 +6,8 @@ contract ERC20Token {
     function transfer(address _to, uint256 _value) public returns (bool); // This makes available the transfer function of the specified ERC20 token.
 }
 
+
+// Consider using SafeMath library from OpenZeppelin.
 contract PricedTokenSale {
     // PMKN hardcoded for simplicity
     address tokenAddress = 0xcD7f46B8A66203B842c7B68863de7e90643E426B; // Whatever is the contract address for pitchToken when deployed.
