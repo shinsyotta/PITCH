@@ -1,5 +1,7 @@
 pragma solidity ^0.4.4;
 
+// Could add whitelist here using Ethereum addresses and boolean flag showing whether they are whitelisted.
+
 contract ERC20Token {
     function transfer(address _to, uint256 _value) public returns (bool); // This makes available the transfer function of the specified ERC20 token.
 }
