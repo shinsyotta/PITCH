@@ -11,7 +11,7 @@ contract PricedTokenSale {
     address tokenAddress = 0xcD7f46B8A66203B842c7B68863de7e90643E426B; // Whatever is the contract address for pitchToken when deployed.
     
     // Need to accept payment and transfer it to custody of another wallet.
-    // Need to make the method that accepts payment into the default method of the contract.
+    // Need to make the method that accepts payment into the default method of the contract (unnamed function).
     // Token sale should work as "send ETH to Ethereum address 0xabc123abc1233B842c7B68863de7e90643E426B"
 
     function deliverTokens(uint256 amountToTransfer) public returns (bool success) {
@@ -20,3 +20,5 @@ contract PricedTokenSale {
         return true;
     }
 }
+
+// If we add a refund mechanism, I think it should be via a different contract.
