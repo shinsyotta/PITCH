@@ -138,7 +138,7 @@ contract ERC20Token is StandardToken {
         balances[msg.sender] = (1618000000*1000000000000000000);               // Give the creator all initial tokens (100000 for example)
         totalSupply = (1618000000*1000000000000000000);                        // Update total supply (100000 for example)
         name = "PITCH";                                   // Set the name for display purposes
-        decimals = 18;                            // Amount of decimals for display purposes
+        decimals = 9;                            // Amount of decimals for display purposes
         symbol = "PITCH";                               // Set the symbol for display purposes
     }
 
