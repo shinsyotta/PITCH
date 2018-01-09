@@ -15,3 +15,12 @@ Token Sale Contract:
 Token Accepting Contract and attached app:
 - Takes in tokens.
 - When it receives tokens from specific address, it 1:1 credits a specific username on the Pitch Investors Live centralized app using the API for this app.
+
+
+## Dev
+
+1. Install Ganache http://truffleframework.com/ganache/
+2. Run `./dev-macos-setup.sh` or read it and do the equivalent
+3. Close your terminal window and open a new one in the project
+4. Run `npm install -g truffle`
+5. Run `truffle test`
