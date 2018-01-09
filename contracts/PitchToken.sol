@@ -105,6 +105,8 @@ contract PitchToken {
 
         if (balances[_from] < _value)
             return false;
+        
+        return true;
     }
 
     // // TODO: Does this enable a receiving contract to take some kind of action?  If not, we need to implement a feature to do this so that the token is usable.
@@ -119,10 +121,10 @@ contract PitchToken {
     // //     return true;
     // // }
 
-    // // function () public {
-    // //     //if ether is sent to this address, send it back.
-    // //     revert();
-    // // }
+    function () public {
+        //if ether is sent to this address, send it back.
+        revert();
+    }
 
     event Transfer(address indexed from, address indexed to, uint tokens);
 

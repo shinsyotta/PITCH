@@ -3,7 +3,7 @@ var PitchToken = artifacts.require("PitchToken");
 
 contract('PitchToken', function(accounts) {
 
-  it("should put 10000 MetaCoin in the first account", function() {
+  it("should put 1618000000000000000 PitchTokens in the first account", function() {
     return PitchToken.deployed().then(function(instance) {
       return instance.balanceOf.call(accounts[0]);
     }).then(function(balance) {
@@ -41,7 +41,6 @@ contract('PitchToken', function(accounts) {
       return pitch.balanceOf.call(account_two);
     }).then(function(balance) {
       account_two_ending_balance = balance.toNumber();
-
       assert.equal(account_one_ending_balance, account_one_starting_balance - amount, "Amount wasn't correctly taken from the sender");
       assert.equal(account_two_ending_balance, account_two_starting_balance + amount, "Amount wasn't correctly sent to the receiver");
     });
