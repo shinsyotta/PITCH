@@ -23,4 +23,6 @@ Token Accepting Contract and attached app:
 2. Run `./dev-macos-setup.sh` or read it and do the equivalent
 3. Close your terminal window and open a new one in the project
 4. Run `npm install -g truffle`
-5. Run `truffle test`
+5. Run `truffle develop` or `truffle develop log`
+6. Open a new tab in terminal.
+7. Run `truffle test`
