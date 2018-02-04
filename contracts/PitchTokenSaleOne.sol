@@ -6,7 +6,7 @@ import "contracts/PitchToken.sol";
 contract PitchTokenSaleOne {
     address private token;
     address private seller;
-    uint256 public priceInEth = 1;
+    uint256 public priceInEth = 0.01 ether;
     address public owner;
 
     function PitchTokenSaleOne(address _token, address _seller) public {

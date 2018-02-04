@@ -40,4 +40,13 @@ contract PitchTokenStableSale {
     function getValue() public pure returns (uint256 value) {
         return 99;
     }
+
+    // function buy() public {
+    //     var current_token_sale = PitchTokenSale(currentSale);
+
+    //     // reserve tokens for msg.sender
+
+    //     // 
+
+    // }
 }
