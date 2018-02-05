@@ -89,7 +89,7 @@ contract('PitchToken', function(accounts) {
     var account_one_starting_balance = (await token.balanceOf.call(account_one)).toNumber();
     var account_two_starting_balance = (await token.balanceOf.call(account_two)).toNumber();
 
-    await token.transferFrom(account_one, account_two, amount);
+    await token.transfer(account_two, amount, {from: account_one});
 
     var account_one_ending_balance = (await token.balanceOf.call(account_one)).toNumber();
     var account_two_ending_balance = (await token.balanceOf.call(account_two)).toNumber();

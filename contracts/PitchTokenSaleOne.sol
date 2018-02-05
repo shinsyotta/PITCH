@@ -15,4 +15,8 @@ contract PitchTokenSaleOne {
 
         owner = PitchToken(_token).owner();
     }
+
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
+        return PitchToken(token).transferFrom(_from, _to, _value);
+    }
 }

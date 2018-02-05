@@ -9,6 +9,7 @@ contract PitchToken {
     address public owner;
     mapping (address => uint256) balances;
     mapping (address => mapping (address => uint256)) allowed;
+
     uint256 public totalSupply;
     bool private saleComplete;
 
@@ -41,93 +42,38 @@ contract PitchToken {
         return balances[_owner];
     }
 
-    // function approve(address _spender, uint256 _value) public returns (bool success) {
-    //     allowed[msg.sender][_spender] = _value;
-    //     Approval(msg.sender, _spender, _value);
-    //     return true;
-    // }
+    function approve(address _spender, uint256 _value) public returns (bool success) {
+        allowed[msg.sender][_spender] = _value;
+        Approval(msg.sender, _spender, _value);
+        return true;
+    }
 
-    // function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {
-    //   return allowed[_owner][_spender];
-    // }
-
-    // function transfer2(address _to, uint256 _value) public returns (bool success) {
-    //     //Default assumes totalSupply can't be over max (2^256 - 1).
-    //     //If your token leaves out totalSupply and can issue more tokens as time goes on, you need to check if it doesn't wrap.
-    //     //Replace the if with this one instead.
-    //     //if (balances[msg.sender] >= _value && balances[_to] + _value > balances[_to]) {
-        
-    //     // TODO: If token sale is not finished.
-    //     // AND user is not the owner of the contract
-    //     // don't allow transfer.
-    //     // TODO: Implement "tradeable" function.
-
-    //     if (_canTransfer(msg.sender, _value)) {
-    //     // if (true) {
-    //         balances[msg.sender] = balances[msg.sender].sub(_value);
-    //         balances[_to] = balances[_to].add(_value);
-    //         Transfer(msg.sender, _to, _value);
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
+    function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {
+        return allowed[_owner][_spender];
+    }
 
     function transfer(address _to, uint256 _value) public returns (bool) {
         require(_to != address(0));
-        require(_value <= balances[msg.sender]);
+        require(_value > 0 && _value <= balances[msg.sender]);
         require(msg.sender == owner || saleComplete);
 
-        // SafeMath.sub will throw if there is not enough balance.
         balances[msg.sender] = balances[msg.sender].sub(_value);
         balances[_to] = balances[_to].add(_value);
         Transfer(msg.sender, _to, _value);
+
         return true;
     }
 
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
-        //same as above. Replace this line with the following if you want to protect against wrapping uints.
-        //if (balances[_from] >= _value && allowed[_from][msg.sender] >= _value && balances[_to] + _value > balances[_to]) {
-        
-        // TODO: If token sale is not finished.
-        // AND user is not the owner of the contract
-        // don't allow transfer
-        // TODO: Implement "tradeable" function.
+        require(_to != address(0));
+        require(_value > 0 && _value <= balances[_from] && _value <= allowed[_from][msg.sender]);
 
-        if ( _canTransferWithApproval(_from, _value) ) {
-            balances[_to] += _value;
-            balances[_from] -= _value;
-            allowed[_from][msg.sender] -= _value;
-            Transfer(_from, _to, _value);
-            return true;
-        } else {
-            return false;
-        }
-    }
+        allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);
+        balances[_from] = balances[_from].sub(_value);
+        balances[_to] = balances[_to].add(_value);
 
-    function _canTransferWithApproval(address _from, uint256 _value) internal constant returns (bool canTransfer) {        
-        if (!_canTransfer(_from, _value))
-            return false;
+        Transfer(_from, _to, _value);
 
-        if (_from == owner)
-            return true;
-        
-        if (allowed[_from][msg.sender] >= _value)
-            return true;
-
-        return false;
-    }
-
-    function _canTransfer(address _from, uint256 _value) internal constant returns (bool canTransfer) {
-        if (_value <= 0)
-            return false;
-
-        if (_from != owner && !saleComplete)
-            return false;
-
-        if (balances[_from] < _value)
-            return false;
-        
         return true;
     }
 
@@ -143,18 +89,6 @@ contract PitchToken {
         saleComplete = true;
         return saleComplete;
     }
-
-    // // TODO: Does this enable a receiving contract to take some kind of action?  If not, we need to implement a feature to do this so that the token is usable.
-    // // function approveAndCall(address _spender, uint256 _value, bytes _extraData) public returns (bool success) {
-    // //     allowed[msg.sender][_spender] = _value;
-    // //     Approval(msg.sender, _spender, _value);
-
-    // //     //call the receiveApproval function on the contract you want to be notified. This crafts the function signature manually so one doesn't have to include a contract in here just for this.
-    // //     //receiveApproval(address _from, uint256 _value, address _tokenContract, bytes _extraData)
-    // //     //it is assumed that when does this that the call *should* succeed, otherwise one would use vanilla approve instead.
-    // //     if(!_spender.call(bytes4(bytes32(keccak256("receiveApproval(address,uint256,address,bytes)"))), msg.sender, _value, this, _extraData)) { revert(); }
-    // //     return true;
-    // // }
 
     // function () public {
     //     //if ether is sent to this address, send it back.
