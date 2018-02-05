@@ -13,26 +13,20 @@ contract PitchToken {
     uint256 public totalSupply;
     bool private saleComplete;
 
-    /*
-    NOTE:
-    The following variables are OPTIONAL vanities. One does not have to include them.
-    They allow one to customise the token contract & in no way influences the core functionality.
-    Some wallets/interfaces might not even bother to look at this information.
-    */
-    string public name;                   //fancy name: eg Simon Bucks
-    uint8 public decimals;                //How many decimals to show. ie. There could 1000 base units with 3 decimals. Meaning 0.980 SBX = 980 base units. It's like comparing 1 wei to 1 ether.
-    string public symbol;                 //An identifier: eg SBX
-    string public version = "H1.0";       //human 0.1 standard. Just an arbitrary versioning scheme.
+    string public name;
+    uint8 public decimals;
+    string public symbol;
+    string public version = "H1.0";
 
     function PitchToken() public {
-        name = "PITCH";                                             // Set the name for display purposes
-        symbol = "PITCH";                                           // Set the symbol for display purposes
+        name = "PITCH";
+        symbol = "PITCH";
 
-        decimals = 9;                                               // Amount of decimals for display purposes
-        totalSupply = (161800000 * (10**uint(decimals)));
+        decimals = 9;
+        totalSupply = (1618000000 * (10**uint(decimals)));
 
         owner = msg.sender;
-        balances[msg.sender] = totalSupply;  // Give the creator all initial tokens (100000 for example)
+        balances[msg.sender] = totalSupply;
 
         saleComplete = false;
         Transfer(address(0), msg.sender, totalSupply);
@@ -59,6 +53,7 @@ contract PitchToken {
 
         balances[msg.sender] = balances[msg.sender].sub(_value);
         balances[_to] = balances[_to].add(_value);
+
         Transfer(msg.sender, _to, _value);
 
         return true;
@@ -90,10 +85,10 @@ contract PitchToken {
         return saleComplete;
     }
 
-    // function () public {
-    //     //if ether is sent to this address, send it back.
-    //     revert();
-    // }
+    function () public {
+        //if ether is sent to this address, send it back.
+        revert();
+    }
 
     event Transfer(address indexed from, address indexed to, uint tokens);
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);

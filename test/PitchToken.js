@@ -8,10 +8,10 @@ contract('PitchToken', function(accounts) {
     token = await PitchToken.deployed();
   });
 
-  it("should put 161800000000000000 PitchTokens in the first account", async function() {
+  it("should put 1618000000000000000 PitchTokens in the first account", async function() {
     let balance = await token.balanceOf.call(accounts[0]);
 
-    assert.equal(balance.toNumber(), 161800000000000000, "161800000000000000 wasn't in the first account");
+    assert.equal(balance.toNumber(), 1618000000000000000, "1618000000000000000 wasn't in the first account");
   });
 
   it("should start out incomplete", async function() {
