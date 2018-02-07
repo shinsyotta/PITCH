@@ -37,6 +37,8 @@ contract PitchToken {
     }
 
     function approve(address _spender, uint256 _value) public returns (bool success) {
+        require(msg.sender == owner || saleComplete);
+        
         allowed[msg.sender][_spender] = _value;
         Approval(msg.sender, _spender, _value);
         return true;

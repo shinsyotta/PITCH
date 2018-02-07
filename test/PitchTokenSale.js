@@ -1,16 +1,19 @@
 // Specifically request an abstraction for PitchToken
 var PitchToken = artifacts.require("PitchToken"),
+    PitchTokenSale = artifacts.require("PitchTokenSale"),
     PitchTokenSaleOne = artifacts.require("PitchTokenSaleOne"),
     PitchTokenSaleTwo = artifacts.require("PitchTokenSaleTwo");
 
 
 contract('PitchTokenSaleOne', function(accounts) {
   let token;
+  let sale;
   let sale_one;
   let sale_two;
 
   beforeEach(async function () {
     token = await PitchToken.deployed();
+    sale = await PitchTokenSale.deployed();
     sale_one = await PitchTokenSaleOne.deployed();
     sale_two = await PitchTokenSaleTwo.deployed();
   });
@@ -56,5 +59,11 @@ contract('PitchTokenSaleOne', function(accounts) {
 
     assert.equal(account_one_ending_balance, account_one_starting_balance, "the sender balance shouldn't have changed");
     assert.equal(account_two_ending_balance, account_two_starting_balance, "the receiver balance shouldn't have changed");
+  });
+
+  it("should have a price", async function() {
+    var price = (await sale.currentTokenPrice.call()).toNumber();
+
+    assert.equal(price, 10, "ten");
   });
 });

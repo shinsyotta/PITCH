@@ -2,29 +2,35 @@ pragma solidity ^0.4.4;
 
 import "contracts/PitchTokenSale.sol";
 import "contracts/PitchToken.sol";
+import "contracts/SafeMath.sol";
 
 contract PitchTokenStableSale {
-    address private token;
-    address private currentSale;
+    using SafeMath for uint256;
+
+    uint256 public tokensSold;
+
     address public owner;
+    address public token;
+    address public currentSale;
 
     function PitchTokenStableSale(address _token) public {
         token = _token;
         owner = PitchToken(_token).owner();
+        tokensSold = 0;
+    }
+
+    function () payable {
+        
     }
 
     function setToken(address _token) public {
-        if (msg.sender != owner) {
-            revert();
-        }
+        require(msg.sender == owner);
 
         token = _token;
     }
 
     function setCurrentSale(address _currentSale) public {
-        if (msg.sender != owner) {
-            revert();
-        }
+        require(msg.sender == owner);
 
         currentSale = _currentSale;
     }
@@ -34,11 +40,7 @@ contract PitchTokenStableSale {
             return 0;
         }
 
-        return PitchTokenSale(currentSale).priceInEth();
-    }
-
-    function getValue() public pure returns (uint256 value) {
-        return 99;
+        return PitchTokenSale(currentSale).currentTokenPrice();
     }
 
     // function buy() public {
