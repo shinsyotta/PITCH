@@ -32,6 +32,11 @@ contract PitchToken {
         Transfer(address(0), msg.sender, totalSupply);
     }
 
+    modifier isOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+
     function balanceOf(address _owner) public constant returns (uint256 balance) {
         return balances[_owner];
     }

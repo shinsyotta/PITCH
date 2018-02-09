@@ -74,7 +74,7 @@ contract PitchTokenSale {
 
             // return the tokens available in this round plus what was 
             // sold at higher prices
-            return available.add(calculate_purchase(_amountInWei.sub(spent), _tokensSold.add(available)));
+            return available.add(calculatePurchase(_amountInWei.sub(spent), _tokensSold.add(available)));
         }
 
         // everything they wanted to buy fit in the current
