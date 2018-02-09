@@ -3,7 +3,7 @@ var PitchToken = artifacts.require("PitchToken"),
     PitchTokenSale = artifacts.require("PitchTokenSale");
 
 
-contract('PitchTokenSaleOne', function(accounts) {
+contract('PitchTokenSale', function(accounts) {
   let token;
   let sale;
 

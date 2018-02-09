@@ -1,13 +1,27 @@
 // Specifically request an abstraction for PitchToken
-var PitchTokenStableSale = artifacts.require("PitchTokenStableSale");
+var PitchTokenStableSale = artifacts.require("PitchTokenStableSale"),
+    PitchToken = artifacts.require("PitchToken");
 
 contract('PitchTokenStableSale', function(accounts) {
-    it("should have no price when uninitialized", async function() {
-        var sale = await PitchTokenStableSale.deployed();
-        var currentPrice = await sale.getCurrentPrice.call();
+    let token;
+    let stable;
 
-        assert.equal(currentPrice, 0, "Unintialized sale should have a price of 0.");
+    beforeEach(async function () {
+      token = await PitchToken.deployed();
+      stable = await PitchTokenStableSale.deployed();
     });
+
+    it("should have an allowance", async function() {
+        var allowance = (await token.allowance(accounts[0], stable.address)).toNumber();
+        assert.equal(allowance, 323600000, "allowance");
+    });
+  
+    // it("should have no price when uninitialized", async function() {
+    //     var sale = await PitchTokenStableSale.deployed();
+    //     var currentPrice = await sale.getCurrentPrice.call();
+
+    //     assert.equal(currentPrice, 0, "Unintialized sale should have a price of 0.");
+    // });
 
     // it("should have a price of 1 when sale one is active", async function() {
     //     var sale = await PitchTokenStableSale.deployed();
