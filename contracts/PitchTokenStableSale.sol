@@ -41,7 +41,7 @@ contract PitchTokenStableSale {
 
     function () public payable canPurchase {
         PitchTokenSale tokenSale = PitchTokenSale(currentSale);
-        uint256 tokenCount = tokenSale.calculatePurchase(msg.value, tokensSold);
+        uint256 tokenCount = tokenSale.calculatePurchaseQuantity(msg.value, tokensSold);
         PitchToken tokenInstance = PitchToken(token);
 
         tokensSold = tokensSold.add(tokenCount);

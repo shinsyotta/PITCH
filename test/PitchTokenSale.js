@@ -12,52 +12,58 @@ contract('PitchTokenSale', function(accounts) {
     sale = await PitchTokenSale.deployed();
   });
 
-  it("should send coin correctly", async function() {
-    var amount = 100;
+  it("should return the token price given a count of sold tokens", async function() {
+    var roundOne = await sale.currentTokenPrice(0);
+    assert.equal(roundOne.toNumber(), 74165636588380);
 
-    var account_one = accounts[0];
-    var account_two = accounts[1];
+    var roundTwo = await sale.currentTokenPrice(40450000 * 1);
+    assert.equal(roundTwo.toNumber(), 80346106304079);
 
-    var account_one_starting_balance = (await token.balanceOf.call(account_one)).toNumber();
-    var account_two_starting_balance = (await token.balanceOf.call(account_two)).toNumber();
+    var roundThree = await sale.currentTokenPrice(40450000 * 2);
+    assert.equal(roundThree.toNumber(), 86526576019777);
 
-    // await sale_one.transferFrom(account_one, account_two, amount);
+    var roundFour = await sale.currentTokenPrice(40450000 * 3);
+    assert.equal(roundFour.toNumber(), 92707045735475);
 
-    var account_one_ending_balance = (await token.balanceOf.call(account_one)).toNumber();
-    var account_two_ending_balance = (await token.balanceOf.call(account_two)).toNumber();
+    var roundFive = await sale.currentTokenPrice(40450000 * 4);
+    assert.equal(roundFive.toNumber(), 98887515451174);
 
-    assert.equal(account_one_ending_balance, account_one_starting_balance - amount, "Amount wasn't correctly taken from the sender");
-    assert.equal(account_two_ending_balance, account_two_starting_balance + amount, "Amount wasn't correctly sent to the receiver");
+    var roundSix = await sale.currentTokenPrice(40450000 * 5);
+    assert.equal(roundSix.toNumber(), 105067985166872);
+
+    var roundSeven = await sale.currentTokenPrice(40450000 * 6);
+    assert.equal(roundSeven.toNumber(), 111248454882571);
+
+    var roundEight = await sale.currentTokenPrice(40450000 * 7);
+    assert.equal(roundEight.toNumber(), 117428924598269);
+
+    let err = null;
+    try {
+      var roundNine = await sale.currentTokenPrice(40450000 * 8);
+    } catch (error) {
+      err = error;
+    }
+
+    assert.ok(err instanceof Error, "trying to get too many tokens should blow up");
   });
 
-  // it("should not send for sale two", async function() {
-  //   var amount = 100;
+  it("should calculate the number of tokens purchased", async function() {
+    var one = await sale.calculatePurchaseQuantity.call(74165636588380 * 3, 0);
+    assert.equal(one.toNumber(), 3);
 
-  //   var account_one = accounts[0];
-  //   var account_two = accounts[1];
+    var one = await sale.calculatePurchaseQuantity.call(74165636588380 + 80346106304079, 40450000 - 1);
+    assert.equal(one.toNumber(), 2, "purchase spans rounds 1 and 2");
 
-  //   var account_one_starting_balance = (await token.balanceOf.call(account_one)).toNumber();
-  //   var account_two_starting_balance = (await token.balanceOf.call(account_two)).toNumber();
+    var one = await sale.calculatePurchaseQuantity.call(117428924598269, (40450000 * 8) - 1);
+    assert.equal(one.toNumber(), 1, "last token");
 
-  //   let err = null;
-  //   try {
-  //       await sale_two.transferFrom(account_one, account_two, amount);
-  //   } catch (error) {
-  //     err = error;
-  //   }
+    let err = null;
+    try {
+      var one = await sale.calculatePurchaseQuantity.call(117428924598269 * 2, (40450000 * 8) - 1);
+    } catch (error) {
+      err = error;
+    }
 
-  //   assert.ok(err instanceof Error, "transferFrom should have thrown an error");
-
-  //   var account_one_ending_balance = (await token.balanceOf.call(account_one)).toNumber();
-  //   var account_two_ending_balance = (await token.balanceOf.call(account_two)).toNumber();
-
-  //   assert.equal(account_one_ending_balance, account_one_starting_balance, "the sender balance shouldn't have changed");
-  //   assert.equal(account_two_ending_balance, account_two_starting_balance, "the receiver balance shouldn't have changed");
-  // });
-
-  // it("should have a price", async function() {
-  //   var price = (await sale.currentTokenPrice.call()).toNumber();
-
-  //   assert.equal(price, 10, "ten");
-  // });
+    assert.ok(err instanceof Error, "last token plus one");
+  });
 });

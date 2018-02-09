@@ -36,14 +36,12 @@ contract PitchTokenSale {
 
         // if we've exceeded the prices array length it means
         // we're trying to sell too many tokens, blow up
-        if (index >= thresholdPrices.length) {
-            revert();
-        }
+        require(index < thresholdPrices.length);
 
-        return  thresholdPrices[index];
+        return thresholdPrices[index];
     }
 
-    function calculatePurchase(uint256 _amountInWei, uint256 _tokensSold) public returns (uint256) {
+    function calculatePurchaseQuantity(uint256 _amountInWei, uint256 _tokensSold) public returns (uint256) {
         // get the current price
         uint256 currentPrice = currentTokenPrice(_tokensSold);
 
@@ -63,7 +61,7 @@ contract PitchTokenSale {
 
             // return the tokens available in this round plus what was 
             // sold at higher prices
-            return available.add(calculatePurchase(_amountInWei.sub(spent), _tokensSold.add(available)));
+            return available.add(calculatePurchaseQuantity(_amountInWei.sub(spent), _tokensSold.add(available)));
         }
 
         // everything they wanted to buy fit in the current

@@ -11,9 +11,9 @@ contract('PitchTokenStableSale', function(accounts) {
       stable = await PitchTokenStableSale.deployed();
     });
 
-    it("should have an allowance", async function() {
+    it("should have an allowance equaling all eight rounds", async function() {
         var allowance = (await token.allowance(accounts[0], stable.address)).toNumber();
-        assert.equal(allowance, 323600000, "allowance");
+        assert.equal(allowance, 40450000 * 8);
     });
   
     // it("should have no price when uninitialized", async function() {
