@@ -75,10 +75,6 @@ contract PitchTokenStableSale {
         currentSale = _currentSale;
     }
 
-    function setBeneficiary(address _beneficiary) public isOwner {
-        beneficiary = _beneficiary;
-    }
-
     function setSaleOpen(bool _saleStatus) public isOwner {
         saleOpen = _saleStatus;
     }
