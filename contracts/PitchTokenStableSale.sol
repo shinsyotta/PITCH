@@ -67,19 +67,19 @@ contract PitchTokenStableSale {
         return whitelistedAddresses[userAddress];
     }
 
-    function setToken(address _token) public isSeller {
+    function setToken(address _token) public isOwner {
         token = _token;
     }
 
-    function setCurrentSale(address _currentSale) public isSeller {
+    function setCurrentSale(address _currentSale) public isOwner {
         currentSale = _currentSale;
     }
 
-    function setBeneficiary(address _beneficiary) public isSeller {
+    function setBeneficiary(address _beneficiary) public isOwner {
         beneficiary = _beneficiary;
     }
 
-    function setSaleOpen(bool _saleStatus) public isSeller {
+    function setSaleOpen(bool _saleStatus) public isOwner {
         saleOpen = _saleStatus;
     }
 }

@@ -12,6 +12,6 @@ module.exports = function(deployer, network, accounts) {
         token.approve(PitchTokenStableSale.address, 323600000);
         return PitchTokenStableSale.deployed();
     }).then(function(stable) {
-        return stable.setCurrentSale(PitchTokenSale.address, {from: accounts[9]});
+        return stable.setCurrentSale(PitchTokenSale.address);
     });
 };
