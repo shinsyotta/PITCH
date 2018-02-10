@@ -5,10 +5,12 @@ var PitchTokenStableSale = artifacts.require("PitchTokenStableSale"),
 contract('PitchTokenStableSale', function(accounts) {
     let token;
     let stable;
+    let seller;
 
     beforeEach(async function () {
       token = await PitchToken.deployed();
       stable = await PitchTokenStableSale.deployed();
+      seller = accounts[9];
     });
 
     it("should have an allowance equaling all eight rounds", async function() {
@@ -19,7 +21,7 @@ contract('PitchTokenStableSale', function(accounts) {
     it("should whitelist purchasers", async function() {
         var purchaser = accounts[2];
 
-        var one = await stable.addToWhitelist.sendTransaction(purchaser);
+        var one = await stable.addToWhitelist.sendTransaction(purchaser, {from: seller});
 
         var two = await stable.isWhitelisted.call(purchaser);
         assert.equal(two, true, "checking if whitelisted");
@@ -29,7 +31,7 @@ contract('PitchTokenStableSale', function(accounts) {
         var purchaser = accounts[2];
         var beneficiary = accounts[0];
 
-        await stable.addToWhitelist.sendTransaction(purchaser);
+        await stable.addToWhitelist.sendTransaction(purchaser, {from: seller});
 
         var startingBalance = web3.eth.getBalance(beneficiary).toNumber();
 
@@ -38,7 +40,7 @@ contract('PitchTokenStableSale', function(accounts) {
         var endingBalance = web3.eth.getBalance(beneficiary).toNumber();
 
         assert.equal(endingBalance - startingBalance, (74165636588380 * 2) - 1720);
-        
+
         var balance = await token.balanceOf.call(purchaser);
         assert.equal(balance.toNumber(), 2);
     });

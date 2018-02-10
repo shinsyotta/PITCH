@@ -15,21 +15,27 @@ contract PitchTokenStableSale {
     address public owner;
     address public token;
     address public currentSale;
+    address public seller;
     bool public saleOpen;
 
     event LogEvent(string description);
 
-    function PitchTokenStableSale(address _token, address _beneficiary) public {
+    function PitchTokenStableSale(address _token, address _beneficiary, address _seller) public {
+        seller = _seller;
+        beneficiary = _beneficiary;
         token = _token;
         owner = PitchToken(_token).owner();
-        beneficiary = _beneficiary;
         tokensSold = 0;
         saleOpen = true;
-        whitelistedAddresses[owner] = true;
     }
 
     modifier isOwner() {
         require(msg.sender == owner);
+        _;
+    }
+
+    modifier isSeller() {
+        require(msg.sender == seller);
         _;
     }
 
@@ -53,7 +59,7 @@ contract PitchTokenStableSale {
         tokenInstance.transferFrom(owner, msg.sender, tokenCount);
     }
 
-    function addToWhitelist(address userAddress) public isOwner {
+    function addToWhitelist(address userAddress) public isSeller {
         whitelistedAddresses[userAddress] = true;
     }
 
@@ -61,19 +67,19 @@ contract PitchTokenStableSale {
         return whitelistedAddresses[userAddress];
     }
 
-    function setToken(address _token) public isOwner {
+    function setToken(address _token) public isSeller {
         token = _token;
     }
 
-    function setCurrentSale(address _currentSale) public isOwner {
+    function setCurrentSale(address _currentSale) public isSeller {
         currentSale = _currentSale;
     }
 
-    function setBeneficiary(address _beneficiary) public isOwner {
+    function setBeneficiary(address _beneficiary) public isSeller {
         beneficiary = _beneficiary;
     }
 
-    function setSaleOpen(bool _saleStatus) public isOwner {
+    function setSaleOpen(bool _saleStatus) public isSeller {
         saleOpen = _saleStatus;
     }
 }
