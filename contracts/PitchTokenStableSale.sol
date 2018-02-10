@@ -15,7 +15,7 @@ contract PitchTokenStableSale {
     address public currentSale;
     bool public saleOpen;
 
-    mapping (address => bool) whitelist;
+    mapping (address => uint) public whitelistedAddresses;
 
     function PitchTokenStableSale(address _token, address _beneficiary) public {
         token = _token;
@@ -23,6 +23,7 @@ contract PitchTokenStableSale {
         beneficiary = _beneficiary;
         tokensSold = 0;
         saleOpen = true;
+        whitelistedAddresses[owner] = 1;
     }
 
     modifier isOwner() {
@@ -35,7 +36,7 @@ contract PitchTokenStableSale {
         require(msg.value > 0);
         require(msg.sender != address(0));
         require(currentSale != address(0));
-        require(whitelist[msg.sender]);
+        require(whitelistedAddresses[msg.sender] == 1);
         _;
     }
 
@@ -50,8 +51,13 @@ contract PitchTokenStableSale {
         tokenInstance.transferFrom(owner, msg.sender, tokenCount);
     }
 
-    function addToWhitelist(address _whitelistedAddress) public isOwner {
-        whitelist[_whitelistedAddress] = true;
+    function addToWhitelist(address userAddress) public isOwner returns (uint whitelisted) {
+        whitelistedAddresses[userAddress] = 1;
+        return whitelistedAddresses[userAddress];
+    }
+
+    function isWhitelisted(address userAddress) public view returns (uint whitelisted) {
+        return whitelistedAddresses[userAddress];
     }
 
     function setToken(address _token) public isOwner {

@@ -15,7 +15,30 @@ contract('PitchTokenStableSale', function(accounts) {
         var allowance = (await token.allowance(accounts[0], stable.address)).toNumber();
         assert.equal(allowance, 40450000 * 8);
     });
-  
+
+    it("should whitelist purchasers", async function() {
+        var purchaser = accounts[2];
+        
+        console.log((await stable.addToWhitelist.call(purchaser)).toNumber());
+
+        var whitelisted = await stable.isWhitelisted.call(purchaser);
+        
+        console.log([2, purchaser, whitelisted.toNumber()]);
+
+        assert.isTrue(whitelisted);
+    });
+
+    // it("should allow for token purchases", async function() {
+    //     var purchaser = accounts[2];
+
+    //     (await stable.addToWhitelist.call(purchaser));
+
+    //     (await web3.eth.sendTransaction({from: purchaser, to: stable.address, value: 74165636588380 * 2}));
+
+    //     var balance = await token.balanceOf.call(purchaser);
+    //     assert.equal(balance, 2);
+    // });
+
     // it("should have no price when uninitialized", async function() {
     //     var sale = await PitchTokenStableSale.deployed();
     //     var currentPrice = await sale.getCurrentPrice.call();
