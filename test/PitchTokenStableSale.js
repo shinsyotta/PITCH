@@ -18,55 +18,28 @@ contract('PitchTokenStableSale', function(accounts) {
 
     it("should whitelist purchasers", async function() {
         var purchaser = accounts[2];
-        
-        console.log((await stable.addToWhitelist.call(purchaser)).toNumber());
 
-        var whitelisted = await stable.isWhitelisted.call(purchaser);
-        
-        console.log([2, purchaser, whitelisted.toNumber()]);
+        var one = await stable.addToWhitelist.sendTransaction(purchaser);
 
-        assert.isTrue(whitelisted);
+        var two = await stable.isWhitelisted.call(purchaser);
+        assert.equal(two, true, "checking if whitelisted");
     });
 
-    // it("should allow for token purchases", async function() {
-    //     var purchaser = accounts[2];
+    it("should allow for token purchases", async function() {
+        var purchaser = accounts[2];
+        var beneficiary = accounts[0];
 
-    //     (await stable.addToWhitelist.call(purchaser));
+        await stable.addToWhitelist.sendTransaction(purchaser);
 
-    //     (await web3.eth.sendTransaction({from: purchaser, to: stable.address, value: 74165636588380 * 2}));
+        var startingBalance = web3.eth.getBalance(beneficiary).toNumber();
 
-    //     var balance = await token.balanceOf.call(purchaser);
-    //     assert.equal(balance, 2);
-    // });
+        await stable.sendTransaction({from: purchaser, value: 74165636588380 * 2});
 
-    // it("should have no price when uninitialized", async function() {
-    //     var sale = await PitchTokenStableSale.deployed();
-    //     var currentPrice = await sale.getCurrentPrice.call();
+        var endingBalance = web3.eth.getBalance(beneficiary).toNumber();
 
-    //     assert.equal(currentPrice, 0, "Unintialized sale should have a price of 0.");
-    // });
-
-    // it("should have a price of 1 when sale one is active", async function() {
-    //     var sale = await PitchTokenStableSale.deployed();
-    //     var saleOne = await PitchTokenSaleOne.deployed();
-
-    //     sale.setCurrentSale.call(saleOne, {from: accounts[0]}, async function() {
-    //         var currentPrice = await sale.getCurrentPrice.call();
-    
-    //         assert.equal(currentPrice.toNumber(), 1, "Sale one should have a price of 1.");
-
-    //     });
-    // });
-
-    // it("should have a price of 2 when sale two is active", async function() {
-    //     var sale = await PitchTokenStableSale.deployed();
-    //     var saleOne = await PitchTokenSaleTwo.deployed();
-
-    //     sale.setCurrentSale.call(saleOne, {from: accounts[0]}, async function() {
-    //         var currentPrice = await sale.getCurrentPrice.call();
-    
-    //         assert.equal(currentPrice.toNumber(), 2, "Sale two should have a price of 2.");
-
-    //     });
-    // });
+        assert.equal(endingBalance - startingBalance, (74165636588380 * 2) - 1720);
+        
+        var balance = await token.balanceOf.call(purchaser);
+        assert.equal(balance.toNumber(), 2);
+    });
 });

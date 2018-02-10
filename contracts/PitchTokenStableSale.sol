@@ -7,6 +7,8 @@ import "contracts/SafeMath.sol";
 contract PitchTokenStableSale {
     using SafeMath for uint256;
 
+    mapping (address => bool) public whitelistedAddresses;
+
     uint256 public tokensSold;
 
     address public beneficiary;
@@ -15,7 +17,7 @@ contract PitchTokenStableSale {
     address public currentSale;
     bool public saleOpen;
 
-    mapping (address => uint) public whitelistedAddresses;
+    event LogEvent(string description);
 
     function PitchTokenStableSale(address _token, address _beneficiary) public {
         token = _token;
@@ -23,7 +25,7 @@ contract PitchTokenStableSale {
         beneficiary = _beneficiary;
         tokensSold = 0;
         saleOpen = true;
-        whitelistedAddresses[owner] = 1;
+        whitelistedAddresses[owner] = true;
     }
 
     modifier isOwner() {
@@ -36,7 +38,7 @@ contract PitchTokenStableSale {
         require(msg.value > 0);
         require(msg.sender != address(0));
         require(currentSale != address(0));
-        require(whitelistedAddresses[msg.sender] == 1);
+        require(whitelistedAddresses[msg.sender] == true);
         _;
     }
 
@@ -51,12 +53,11 @@ contract PitchTokenStableSale {
         tokenInstance.transferFrom(owner, msg.sender, tokenCount);
     }
 
-    function addToWhitelist(address userAddress) public isOwner returns (uint whitelisted) {
-        whitelistedAddresses[userAddress] = 1;
-        return whitelistedAddresses[userAddress];
+    function addToWhitelist(address userAddress) public isOwner {
+        whitelistedAddresses[userAddress] = true;
     }
 
-    function isWhitelisted(address userAddress) public view returns (uint whitelisted) {
+    function isWhitelisted(address userAddress) public view returns (bool whitelisted) {
         return whitelistedAddresses[userAddress];
     }
 
