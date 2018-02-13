@@ -33,13 +33,13 @@ contract('PitchTokenStableSale', function(accounts) {
 
         await stable.addToWhitelist.sendTransaction(purchaser, {from: seller});
 
-        var startingBalance = web3.eth.getBalance(beneficiary).toNumber();
+        var startingBalance = web3.eth.getBalance(beneficiary);
 
-        await stable.sendTransaction({from: purchaser, value: 74165636588380 * 2});
+        await stable.sendTransaction({from: purchaser, value: 74165 * 2});
 
-        var endingBalance = web3.eth.getBalance(beneficiary).toNumber();
+        var endingBalance = web3.eth.getBalance(beneficiary);
 
-        assert.equal(endingBalance - startingBalance, (74165636588380 * 2) - 1720);
+        assert.isTrue(endingBalance > (startingBalance + 74165));
 
         var balance = await token.balanceOf.call(purchaser);
         assert.equal(balance.toNumber(), 2);

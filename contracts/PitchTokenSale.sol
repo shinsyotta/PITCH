@@ -10,17 +10,17 @@ contract PitchTokenSale {
     address private token;
     address private seller;
     address public owner;
-    uint256 constant threshold = 40450000;
+    uint256 public threshold = 40450000 * (10 ** 9);
 
     uint256[] public thresholdPrices = [
-        74165636588380 wei, // per token, total sale 3000 ether
-        80346106304079 wei, // per token, total sale 3250 ether
-        86526576019777 wei, // per token, total sale 3500 ether
-        92707045735475 wei, // per token, total sale 3750 ether
-        98887515451174 wei, // per token, total sale 4000 ether
-        105067985166872 wei, // per token, total sale 4250 ether
-        111248454882571 wei, // per token, total sale 4500 ether
-        117428924598269 wei // per token, total sale 4750 ether
+        74165 wei, // per token, total sale 3000 ether
+        80346 wei, // per token, total sale 3250 ether
+        86526 wei, // per token, total sale 3500 ether
+        92707 wei, // per token, total sale 3750 ether
+        98887 wei, // per token, total sale 4000 ether
+        105067 wei, // per token, total sale 4250 ether
+        111248 wei, // per token, total sale 4500 ether
+        117428 wei // per token, total sale 4750 ether
     ];
     
 
@@ -50,7 +50,6 @@ contract PitchTokenSale {
 
         // figure out how many tokens in the current round we have to sell
         uint256 available = threshold.sub(_tokensSold % threshold);
-
 
         // if the transaction is trying to buy more than we have available
         // we have to sell what we have at the current price and work on
