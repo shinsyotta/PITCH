@@ -15,7 +15,7 @@ contract('PitchTokenStableSale', function(accounts) {
 
     it("should have an allowance equaling all eight rounds", async function() {
         var allowance = (await token.allowance(accounts[0], stable.address)).toNumber();
-        assert.equal(allowance, 40450000 * 8);
+        assert.equal(allowance, (40450000 * 8) * (10 ** 9));
     });
 
     it("should whitelist purchasers", async function() {
@@ -43,5 +43,41 @@ contract('PitchTokenStableSale', function(accounts) {
 
         var balance = await token.balanceOf.call(purchaser);
         assert.equal(balance.toNumber(), 2);
+    });
+
+    it("should allow for the whitelisting to be turned on and off", async function() {
+        var purchaser = accounts[7];
+
+        var err = null;
+        try {
+            await stable.sendTransaction({from: purchaser, value: 74165 * 2});
+        } catch (error) {
+            err = error;
+        }
+    
+        assert.ok(err instanceof Error, "an unwhitelisted account should fail to purchase");
+
+        await stable.setWhitelist.sendTransaction(false)
+
+        var err = null;
+        try {
+            await stable.sendTransaction({from: purchaser, value: 74165 * 2});
+        } catch (error) {
+            err = error;
+        }
+    
+        assert.ok(!(err instanceof Error), "an unwhitelisted account can purchase with whitelisting off");
+
+        await stable.setWhitelist.sendTransaction(true)
+
+        var err = null;
+        try {
+            await stable.sendTransaction({from: purchaser, value: 74165 * 2});
+        } catch (error) {
+            err = error;
+        }
+    
+        assert.ok(err instanceof Error, "an unwhitelisted account should fail to purchase with whitelisting turned back on");
+
     });
 });

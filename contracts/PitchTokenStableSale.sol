@@ -17,6 +17,7 @@ contract PitchTokenStableSale {
     address public currentSale;
     address public seller;
     bool public saleOpen;
+    bool public checkWhitelist;
 
     event LogEvent(string description);
 
@@ -27,6 +28,7 @@ contract PitchTokenStableSale {
         owner = PitchToken(_token).owner();
         tokensSold = 0;
         saleOpen = true;
+        checkWhitelist = true;
     }
 
     modifier isOwner() {
@@ -44,7 +46,7 @@ contract PitchTokenStableSale {
         require(msg.value > 0);
         require(msg.sender != address(0));
         require(currentSale != address(0));
-        require(whitelistedAddresses[msg.sender] == true);
+        require(!checkWhitelist || whitelistedAddresses[msg.sender] == true);
         _;
     }
 
@@ -57,6 +59,10 @@ contract PitchTokenStableSale {
         beneficiary.transfer(address(this).balance);
 
         tokenInstance.transferFrom(owner, msg.sender, tokenCount);
+    }
+
+    function setWhitelist(bool _whitelistValue) public isOwner {
+        checkWhitelist = _whitelistValue;
     }
 
     function addToWhitelist(address userAddress) public isSeller {
