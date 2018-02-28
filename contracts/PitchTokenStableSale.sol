@@ -67,6 +67,7 @@ contract PitchTokenStableSale {
 
     function addToWhitelist(address userAddress) public isSeller {
         whitelistedAddresses[userAddress] = true;
+        Whitelist(userAddress);
     }
 
     function isWhitelisted(address userAddress) public view returns (bool whitelisted) {
@@ -84,4 +85,6 @@ contract PitchTokenStableSale {
     function setSaleOpen(bool _saleStatus) public isOwner {
         saleOpen = _saleStatus;
     }
+
+    event Whitelist(address indexed who);
 }

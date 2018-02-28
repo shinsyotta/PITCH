@@ -55,7 +55,7 @@ contract PitchToken {
 
     function transfer(address _to, uint256 _value) public returns (bool) {
         require(_to != address(0));
-        require(_value > 0 && _value <= balances[msg.sender]);
+        require(_value <= balances[msg.sender]);
         require(msg.sender == owner || saleComplete);
 
         balances[msg.sender] = balances[msg.sender].sub(_value);
@@ -68,7 +68,7 @@ contract PitchToken {
 
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
         require(_to != address(0));
-        require(_value > 0 && _value <= balances[_from] && _value <= allowed[_from][msg.sender]);
+        require(_value <= balances[_from] && _value <= allowed[_from][msg.sender]);
 
         allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);
         balances[_from] = balances[_from].sub(_value);
