@@ -20,10 +20,16 @@ contract('PitchTokenStableSale', function(accounts) {
 
     it("should whitelist purchasers", async function() {
         var purchaser = accounts[2];
+        var watcher = stable.Whitelist();
 
         var one = await stable.addToWhitelist.sendTransaction(purchaser, {from: seller});
+        var events = await watcher.get();
+        
+        assert.equal(events.length, 1);
+        assert.equal(events[0].args.who, purchaser);
 
         var two = await stable.isWhitelisted.call(purchaser);
+
         assert.equal(two, true, "checking if whitelisted");
     });
 

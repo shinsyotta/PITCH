@@ -1,0 +1,18 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+algo.py	../algo.py	1;"	kind:file	line:1
+amount	../algo.py	/^amount = int(sys.argv[1])$/;"	kind:variable	line:6
+calculate_purchase	../algo.py	/^def calculate_purchase(amount, sold, threshold, prices):$/;"	kind:function	line:9
+one_wei	../prices.py	/^one_wei = 1000000000000000000$/;"	kind:variable	line:4
+p	../prices.py	/^    p = v * one_wei$/;"	kind:variable	line:7
+prices	../algo.py	/^prices = [10, 20, 30, 40, 50]$/;"	kind:variable	line:5
+prices.py	../prices.py	1;"	kind:file	line:1
+sold	../algo.py	/^sold = 3$/;"	kind:variable	line:4
+sys	../algo.py	/^import sys$/;"	kind:namespace	line:1
+threshold	../algo.py	/^threshold = 5$/;"	kind:variable	line:3
+x	../prices.py	/^x = [3000, 3250, 3500, 3750, 4000, 4250, 4500, 4750]$/;"	kind:variable	line:1
+y	../prices.py	/^y = 40450000$/;"	kind:variable	line:2
